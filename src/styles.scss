@@ -1,0 +1,33 @@
+/* You can add global styles to this file, and also import other style files */
+
+/* You can add global styles to this file, and also import other style files */
+@import '~swiper/dist/css/swiper.min.css';
+@import '../node_modules/@angular/material/prebuilt-themes/indigo-pink.css';
+
+// Color 1 scss
+@import './assets/scss/color1.scss';
+@import './assets/scss/theme/theme';
+
+
+.mat-drawer-content{
+    overflow: unset!important;
+  }
+  .mat-drawer-container[fullscreen] {
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    position: unset!important;
+  }
+  div#mainDIV{
+    overflow: unset!important;
+  }
+
+
+
+
+
+
+
+
+
