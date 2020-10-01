@@ -10,7 +10,7 @@
                           <span>Categories</span>
                       </mat-panel-title>
                     </mat-expansion-panel-header>
-                <app-categories></app-categories>
+                <app-categories [category]="categorys"></app-categories>
                   </mat-expansion-panel>
                 <mat-expansion-panel [expanded]="true">
                     <mat-expansion-panel-header>
@@ -19,10 +19,8 @@
                       </mat-panel-title>
                     </mat-expansion-panel-header>
 
-                    <app-price (priceFilters)="updatePriceFilters($event)"></app-price>
+                    <app-price [priceFrom]="priceFrom" [priceTo]="priceTo" (priceFilters)="updatePriceFilters($event)"></app-price>
                   </mat-expansion-panel>
-
-
 
                   <mat-expansion-panel [expanded]="true">
                     <mat-expansion-panel-header>
@@ -30,12 +28,14 @@
                           <span>Size</span>
                       </mat-panel-title>
                     </mat-expansion-panel-header>
-                  <mat-chip-list aria-label="Fish selection">
-                    <mat-chip>M</mat-chip>
-                    <mat-chip>L</mat-chip>
-                    <mat-chip>S</mat-chip>
-                    <mat-chip>X</mat-chip>
-                    <mat-chip>XL</mat-chip>
+                  <mat-chip-list selectable="true" multiple="true" multiple >
+                        <mat-chip  color="primary" *ngFor="let chip of sizes"
+                        [selected] = "chip.selected"
+                        [value]="chip.size"
+                        (click)="chip.selected=!chip.selected; sizeSelect(e);"
+                        >
+                          {{chip.size}}
+                        </mat-chip> 
                     </mat-chip-list>
                     </mat-expansion-panel>
 
@@ -45,18 +45,34 @@
                               <span>Color</span>
                           </mat-panel-title>
                         </mat-expansion-panel-header>
-                      <mat-chip-list aria-label="Fish selection">
-                        <mat-chip  selected="true"></mat-chip>
-                        <mat-chip [ngStyle]="{ backgroundColor: 'white' }"></mat-chip>
-                        <mat-chip [ngStyle]="{ backgroundColor: 'blue' }"></mat-chip>
+                      <mat-chip-list [selectable]="true" aria-label="Fish selection">
+
+                        <mat-chip *ngFor="let chip of colorArray"
+                        [ngStyle]="{ backgroundColor: chip.code,borderRadius:'5px',minWidth: '25px',padding:'0px' }"
+                        (click)="chip.selected=!chip.selected; colorSelect(e);"
+                        >
+                          <!-- {{chip.name}} -->
+                          <span *ngIf="chip.selected" class="material-icons color-tick">
+                            done
+                          </span>
+                        </mat-chip> 
+                        <!-- <mat-chip  selected="true"></mat-chip>
+                        <mat-chip [ngStyle]="{ backgroundColor: 'white' }">
+                          
+                          </mat-chip>
+                        <mat-chip [ngStyle]="{ backgroundColor: 'blue' }">
+                          <span class="material-icons color-tick">
+                            done
+                            </span>
+                        </mat-chip>
                         <mat-chip [ngStyle]="{ backgroundColor: 'black' }"></mat-chip>
-                        <mat-chip [ngStyle]="{ backgroundColor: 'green' }"></mat-chip>
-                        </mat-chip-list>
-                        </mat-expansion-panel>
+                        <mat-chip [ngStyle]="{ backgroundColor: 'green' }"></mat-chip> -->
+                      </mat-chip-list>
+                      </mat-expansion-panel>
     
 
                     
-                      <mat-expansion-panel [expanded]="true">
+                      <!-- <mat-expansion-panel [expanded]="true">
                           <mat-expansion-panel-header>
                             <mat-panel-title>
                                 <span>Brands</span>
@@ -66,7 +82,7 @@
                           <div class="brands">
                              <app-brands (brandChanged)="onBrendsChanged($event)"></app-brands>
                            </div>
-                        </mat-expansion-panel>
+                        </mat-expansion-panel> -->
                        
                 
               </div>
@@ -107,18 +123,25 @@
                 </div> 
               </div>-->
               <div [@Animation]="animation" fxLayout="row wrap" class="products-wrapper">
-                  <div *ngFor="let products of allItems | orderBy:sortByOrder | paginate: { itemsPerPage: 12, currentPage: page  }" fxFlex="100" [fxFlex.gt-sm]="viewCol" fxFlex.sm="50" class="col">
+                  <div *ngFor="let products of products_list | orderBy:sortByOrder" fxFlex="100" [fxFlex.gt-sm]="viewCol" fxFlex.sm="50" class="col">
                      <div class="product-box">
                         <app-product [product]="products"></app-product>
                      </div>
                   </div>
               </div>
 
-              <div *ngIf="products.length > 0" fxLayout="row wrap ">
+              <div *ngIf="products_list.length > 0" fxLayout="row wrap ">
                   <div fxFlex="100">
                       <mat-card class="p-0 text-center no-shadow">
-                          <pagination-controls class="product-pagination" autoHide="true" maxSize="5" (pageChange)="onPageChanged($event)"></pagination-controls>
-                      </mat-card>
+                          <!-- <pagination-controls itemsPerPage="3" class="product-pagination" maxSize="5" (pageChange)="onPageChanged($event)"></pagination-controls> -->
+                          <mat-paginator [length]="productTotal"
+                          [pageSize]="5"
+                          [pageSizeOptions]="[5, 10, 25, 100]"
+                          (page)="changePage($event)"
+                          >
+                       </mat-paginator>
+                    
+                        </mat-card>
                   </div>
               </div>
             </div>

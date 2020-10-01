@@ -2,7 +2,8 @@
   <mat-card fxLayout="column">
     <div class="product-img">
         <a class="product-link" [routerLink]="['/home/product', product.id]">
-          <img [src]="product.pictures[0].big" alt="">
+          <img *ngIf="product.imagePath != null" [src]="product.imagePath" alt="">
+          <img *ngIf="product.imagePath == null" src="https://sainfoinc.com/wp-content/uploads/2018/02/image-not-available.jpg" alt="">
        </a>
        <div class="icons" fxLayout="column">
          <a (click)="addToWishlist(product)" class="hvr-icon-pulse-shrink"><mat-icon class="hvr-icon mat-icon-lg mat-icon material-icons mr-10">favorite_border</mat-icon></a>
@@ -11,9 +12,9 @@
         </div>
     </div>
      <div class="product-info-wrapper">
-        <span class="category">{{product.category}}</span>
+        <span class="category">{{product.displayName}}</span>
         <div class="title-wrap">
-           <h4>{{product.name}}</h4>
+           <h4>{{product.prodName}}</h4>
         </div>
         <div class="stars">
            <!-- <mat-icon class="mat-icon-xs mat-icon material-icons ng-star-inserted">star_rate</mat-icon>

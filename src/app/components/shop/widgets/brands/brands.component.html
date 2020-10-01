@@ -1,4 +1,4 @@
-<div class="brands-items">
+<!-- <div class="brands-items">
     <mat-radio-group
     (change)="brendSelect($event)"
     aria-labelledby="example-radio-group-label"
@@ -7,5 +7,12 @@
       {{brand}}
     </mat-radio-button>
   </mat-radio-group>
-</div>
+</div> -->
 
+<mat-selection-list  (selectionChange)="selectChange(brandsSec.selectedOptions.selected)" #brandsSec>
+  <mat-list-option  class="cat-list" color="primary" *ngFor="let brand of brands"
+  [value]="brand.id"
+  >
+    {{brand.name}}
+  </mat-list-option>
+</mat-selection-list>

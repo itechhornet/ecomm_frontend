@@ -161,7 +161,15 @@
 /***************************************
 * 1. General styles
 ****************************************/
+.color-tick{
+  color:white !important;
 
+}
+
+.cat-list{
+  height: 30px !important;
+  padding: 0px !important;
+}
 
 html, body { height: 100%; }
 body {

@@ -43,6 +43,7 @@ import { CategoriesSectionComponent } from './categories-section/categories-sect
 import { FooterTwoComponent } from './footer-two/footer-two.component';
 import {MatBadgeModule} from '@angular/material/badge';
 import { ShoppingWidgetsTwoComponent } from './shopping-widgets-two/shopping-widgets-two.component';
+import {MatPaginatorModule} from '@angular/material/paginator';
 
 
 
@@ -89,6 +90,7 @@ import { ShoppingWidgetsTwoComponent } from './shopping-widgets-two/shopping-wid
     MatDividerModule,
     MatCardModule,
     FlexLayoutModule,
+    MatPaginatorModule
   ],
   exports: [
     CommonModule,

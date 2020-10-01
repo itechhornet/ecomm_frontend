@@ -1,0 +1,84 @@
+{
+    "status": "200",
+    "message": "Success",
+    "data": {
+      "categoryDto": {
+        "catId": 2,
+        "catName": "kids",
+        "displyName": "KIDS",
+        "childCategory": [
+          {
+            "id": 4,
+            "name": "TRADITIONAL WEAR"
+          },
+          {
+            "id": 2,
+            "name": "T-Shirt"
+          },
+          {
+            "id": 1,
+            "name": "pants"
+          }
+        ],
+        "minPrice": 0,
+        "maxPrice": 1001,
+        "color": [
+          {
+            "id": 1,
+            "colorName": "grey",
+            "displayName": "GREY",
+            "colorCode": "#f56342"
+          },
+          {
+            "id": 2,
+            "colorName": "orange",
+            "displayName": "ORANGE",
+            "colorCode": "#427ef5"
+          }
+        ],
+        "size": [
+          {
+            "id": 2,
+            "sizeName": "xl",
+            "displayName": "XL"
+          },
+          {
+            "id": 1,
+            "sizeName": "m",
+            "displayName": "M"
+          }
+        ],
+        "totalProduct": 4,
+        "totalPage": 2,
+        "productDto": [
+          {
+            "prodId": 2,
+            "prodName": "Bannaras Silk",
+            "displayName": "kurta",
+            "imagePath": "https://assets.myntassets.com/f_webp,dpr_1.0,q_60,w_210,c_limit,fl_progressive/assets/images/8488135/2019/1/21/0f22c134-75ce-41be-9ff6-1ce6ddc001461548063067216-SASSAFRAS-Women-Beige-Printed-Maxi-Dress-7251548063065751-1.jpg",
+            "price": 1001,
+            "discount": 10,
+            "available": true
+          },
+          {
+            "prodId": 3,
+            "prodName": "Trendy Silk",
+            "displayName": "Salvar",
+            "imagePath": "https://assets.myntassets.com/f_webp,dpr_1.0,q_60,w_210,c_limit,fl_progressive/assets/images/7719007/2018/11/19/1cac68d7-2389-48c8-b6d0-0a16c7d4236b1542608837264-Libas-Women-Dresses-9261542608836986-1.jpg",
+            "price": 201,
+            "discount": 20,
+            "available": true
+          },
+          {
+            "prodId": 4,
+            "prodName": "Trendy Silk",
+            "displayName": "Salvar1",
+            "imagePath": "https://assets.myntassets.com/f_webp,dpr_1.0,q_60,w_210,c_limit,fl_progressive/assets/images/productimage/2019/2/18/818d5abc-7760-4fb3-b609-e3b9863e07d61550506908300-1.jpg",
+            "price": 100,
+            "discount": 20,
+            "available": true
+          }
+        ]
+      }
+    }
+  }

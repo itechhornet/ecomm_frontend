@@ -19,6 +19,7 @@ import { HomeTwoComponent } from './home-two/home-two.component';
 import { HomeThreeComponent } from './home-three/home-three.component';
 // Import the library
 import { NgxImageZoomModule } from 'ngx-image-zoom';
+import {MatPaginatorModule} from '@angular/material/paginator';
 
 import { ProductCarouselComponent } from './../shop/home/product-carousel/product-carousel.component';
 import { from } from 'rxjs';
@@ -66,6 +67,7 @@ import { HomeFiveComponent } from './home-five/home-five.component';
     FlexLayoutModule,
     NgxPaginationModule,
     NgxImageZoomModule,
+    MatPaginatorModule
     // NgxImageZoomModule.forRoot() // <-- Add this line
   ],
   exports: [

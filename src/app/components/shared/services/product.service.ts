@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
-import { Observable, BehaviorSubject, Subscriber } from 'rxjs';
-import { HttpClient } from '@angular/common/http';
+import { Observable, BehaviorSubject, Subscriber ,Subject} from 'rxjs';
+import { HttpClient,HttpHeaders } from '@angular/common/http';
 import { Product } from 'src/app/modals/product.model';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { map } from 'rxjs/operators';
-
+import { environment } from 'src/environments/environment';
 
 
 // Get product from Localstorage
@@ -20,21 +20,33 @@ export class ProductService {
   private _url: string = "assets/data/";
   public url = "assets/data/banners.json";
 
+  public productFilter :  any = {pageSize:10,page:0,size:[],color:[],minPrice:0,maxPrice:0,subCategory:[]};
+
   public compareProducts : BehaviorSubject<Product[]> = new BehaviorSubject([]);
   public observer   :  Subscriber<{}>;
+  public productList = new Subject<any>();
+  public env : any = environment; 
+
+  public httpOptions = {
+  headers: new HttpHeaders({
+    'Content-Type':  'application/json'
+    })
+  };
+
 
   constructor(private httpClient: HttpClient, public snackBar: MatSnackBar) {
    this.compareProducts.subscribe(products => products = products)
   }
 
   private products(): Observable<Product[]> {
-    return this.httpClient.get<Product[]>('assets/data/products2.json');
+    return this.httpClient.post<Product[]>(this.env.api_url+'sahana/category/getProductList',{},this.httpOptions
+);
   }
 
+  
   public banners(): Observable<any[]>{
     return this.httpClient.get<any[]>(this.url);
   }
-
 
     // Get Banners
     public getBanners() {
@@ -79,6 +91,27 @@ public hasProduct(product: Product): boolean {
   const item = products.find(item => item.id === product.id);
   return item !== undefined;
 }
+
+public getProductsList(catId = this.productFilter["categoryId"]) {
+   this.productFilter["categoryId"] = catId;
+   this.httpClient.post(this.env.api_url+'sahana/category/getProductList',this.productFilter).subscribe(data=>{
+     this.productList.next(data);
+   });
+}
+
+public checkFilterOptionExist(key,value){
+  if(this.productFilter[key] != undefined && this.productFilter[key].indexOf(value)!=-1){
+    return true;
+  }else{
+    return false;
+  }
+}
+
+updateProductFilter(key,value){
+  this.productFilter[key]=value;
+  //this.getProductsList(this.productFilter["categoryId"]);
+}
+
 
  // Add to compare
  public addToCompare(product: Product): Product | boolean {

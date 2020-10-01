@@ -1,4 +1,5 @@
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter,Input } from '@angular/core';
+import { ProductService } from 'src/app/components/shared/services/product.service';
 
 @Component({
   selector: 'app-price',
@@ -7,9 +8,14 @@ import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 })
 export class PriceComponent implements OnInit {
 
+  @Input()
+  priceFrom
 
-  public priceFrom: number = 750;
-  public priceTo: number = 1599;
+  @Input()
+  priceTo
+
+  //public priceFrom: number = 750;
+  //public priceTo: number = 1599;
   // Using Output EventEmitter
   @Output() priceFilters = new EventEmitter();
 
@@ -18,21 +24,27 @@ export class PriceComponent implements OnInit {
   public max : number = 1000;
   public range = [100,1000];
 
-  constructor() { }
+  constructor(private productService: ProductService) { }
 
   ngOnInit() {  }
 
   // rangeChanged
   priceChanged(event:any) {
-    setInterval(() => {
-      this.priceFilters.emit(event);
-    }, 1000);
+    // setInterval(() => {
+    //   this.priceFilters.emit(event);
+    // }, 1000);
+    
+  
+
   }
 
   priceFilter() {
-    this.priceFilters.emit({
-      priceFrom: this.priceFrom,
-      priceTo: this.priceTo
-    });
+    this.productService.updateProductFilter("minPrice",this.priceFrom);
+    this.productService.updateProductFilter("maxPrice",this.priceTo);
+    this.productService.getProductsList();
+    // this.priceFilters.emit({
+    //   priceFrom: this.priceFrom,
+    //   priceTo: this.priceTo
+    // });
   }
 }

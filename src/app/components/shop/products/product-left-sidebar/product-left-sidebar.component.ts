@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ProductService } from 'src/app/components/shared/services/product.service';
 import { ActivatedRoute, Params } from '@angular/router';
 import { Product, ColorFilter } from 'src/app/modals/product.model';
+import {PageEvent} from '@angular/material/paginator';
 
 @Component({
   selector: 'app-product-left-sidebar',
@@ -17,28 +18,117 @@ export class ProductLeftSidebarComponent implements OnInit {
   public viewType: string = 'list';
   public viewCol: number = 33.3;
   public colorFilters :   ColorFilter[] = [];
-
+  public products_list:any=[];
   public items        :   Product[] = [];
   public allItems: Product[] = [];
   public products: Product[] = [];
   public tags         :   any[] = [];
   public colors       :   any[] = [];
+  public categorys :any;
+  public priceFrom :string;
+  public priceTo :string;
+  public selectedCat :any;
+  public productTotal:any;
+  pageEvent: PageEvent;
+
+  public colorArray : any = [];//[{code:"red",selected:false},
+  //{code:"blue",selected:false},{code:"green",selected:false},{code:"black",selected:false}];
+
+  public sizes :any;//= [{size:"X",selected:false},{size:"XL",selected:false},{size:"M",selected:false}];
 
   constructor(private productService: ProductService, private route: ActivatedRoute) {
     this.route.params.subscribe(
       (params: Params) => {
-        const category = params['category'];
-        this.productService.getProductByCategory(category).subscribe(products => {
-       this.allItems = products;
-       this.products = products.slice(0.8);
-       this.getTags(products)
-       this.getColors(products)
-        })
+        this.selectedCat = params['category'];
+        this.updateProducts();
+      
       }
     )
   }
 
+  updateProducts(){
+    this.productService.getProductsList(this.selectedCat);
+    this.productService.productList.subscribe(products => {
+       //this.products = products.slice(0.8);
+       this.products_list = products["data"]["categoryDto"]["productDto"];
+       this.categorys = products['data']['categoryDto']['childCategory'];
+       this.allItems = this.products_list;
 
+       if(this.productService.productFilter["minPrice"] ==undefined ||
+        this.productService.productFilter["minPrice"] ==""){
+          this.priceFrom = products['data']['categoryDto']['minPrice'];
+        }
+
+        if(this.productService.productFilter["maxPrice"] ==undefined ||
+        this.productService.productFilter["maxPrice"] ==""){
+          this.priceFrom = products['data']['categoryDto']['maxPrice'];
+        }
+       this.productTotal=products['data']['categoryDto']['totalProduct'];
+       this.setSize(products);
+       this.setColor(products);
+       //this.setColor(products)
+        })
+  }
+
+    public changePage(event){
+      this.productService.updateProductFilter("page",event["pageIndex"]);
+      this.productService.updateProductFilter("pageSize",event["pageSize"]);
+      this.updateProducts();
+
+    }
+  
+     public colorSelect(e){
+      let selectedColor = this.colorArray.filter(function(obj){
+        if(obj.selected)
+        return obj.code;
+      });
+      this.productService.updateProductFilter("color",selectedColor.map(ob=>ob.code));
+      this.updateProducts();
+     }
+
+     public sizeSelect(e){
+      let selectedsizes = this.sizes.filter(function(obj){
+        if(obj.selected)
+        return obj.value;
+      });
+      this.productService.updateProductFilter("size",selectedsizes.map(ob=>ob.value));
+      this.updateProducts();
+     }
+
+
+     public setColor(products){
+      
+      let tempColor = [];
+        for(let i in products["data"]["categoryDto"]["color"]){
+
+          let tmColor = {code:products["data"]["categoryDto"]["color"][i]["colorCode"],
+          value:products["data"]["categoryDto"]["color"][i]["colorName"],
+          selected:false}
+
+          if(this.productService.checkFilterOptionExist("color",products["data"]["categoryDto"]["color"][i]["colorCode"])){
+            tmColor.selected = true;
+          }
+
+          tempColor.push(tmColor);
+        }
+        this.colorArray = tempColor;
+     }
+
+     public setSize(products){
+
+      let tempSize = [];
+        for(let i in products["data"]["categoryDto"]["size"]){
+          let tmsize = {size:products["data"]["categoryDto"]["size"][i]["displayName"],
+          value:products["data"]["categoryDto"]["size"][i]["sizeName"],
+          selected:false}
+
+          if(this.productService.checkFilterOptionExist("size",products["data"]["categoryDto"]["size"][i]["sizeName"])){
+            tmsize.selected = true;
+          }
+          tempSize.push(tmsize);
+        }
+        this.sizes = tempSize;
+     }
 
      // Get current product tags
      public getTags(products) {
@@ -77,9 +167,9 @@ export class ProductLeftSidebarComponent implements OnInit {
    }
 
   ngOnInit() {
+
+    console.log(this.colors);
   }
-
-
 
   public changeViewType(viewType, viewCol){
     this.viewType = viewType;
