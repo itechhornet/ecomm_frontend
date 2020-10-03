@@ -1,0 +1,11 @@
+runtime: python27
+api_version: 1
+threadsafe: true
+
+handlers:
+- url: /
+  static_files: dist/your-angular-app/index.html
+  upload: dist/your-angular-app/index.html
+
+- url: /
+  static_dir: dist/your-angular-app

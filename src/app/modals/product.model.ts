@@ -22,6 +22,7 @@ export class Product {
   category?: string;
   tags?: ProductTags[];
   colors?: ProductColor[];
+  imagePath ?:string;
 
   constructor(
     id?: number,

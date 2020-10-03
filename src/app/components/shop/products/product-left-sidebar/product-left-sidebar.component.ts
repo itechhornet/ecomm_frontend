@@ -61,7 +61,7 @@ export class ProductLeftSidebarComponent implements OnInit {
 
         if(this.productService.productFilter["maxPrice"] ==undefined ||
         this.productService.productFilter["maxPrice"] ==""){
-          this.priceFrom = products['data']['categoryDto']['maxPrice'];
+          this.priceTo = products['data']['categoryDto']['maxPrice'];
         }
        this.productTotal=products['data']['categoryDto']['totalProduct'];
        this.setSize(products);
@@ -80,18 +80,18 @@ export class ProductLeftSidebarComponent implements OnInit {
      public colorSelect(e){
       let selectedColor = this.colorArray.filter(function(obj){
         if(obj.selected)
-        return obj.code;
+        return obj.id;
       });
-      this.productService.updateProductFilter("color",selectedColor.map(ob=>ob.code));
+      this.productService.updateProductFilter("color",selectedColor.map(ob=>ob.id));
       this.updateProducts();
      }
 
      public sizeSelect(e){
       let selectedsizes = this.sizes.filter(function(obj){
         if(obj.selected)
-        return obj.value;
+        return obj.id;
       });
-      this.productService.updateProductFilter("size",selectedsizes.map(ob=>ob.value));
+      this.productService.updateProductFilter("size",selectedsizes.map(ob=>ob.id));
       this.updateProducts();
      }
 
@@ -103,9 +103,9 @@ export class ProductLeftSidebarComponent implements OnInit {
 
           let tmColor = {code:products["data"]["categoryDto"]["color"][i]["colorCode"],
           value:products["data"]["categoryDto"]["color"][i]["colorName"],
+          id:products["data"]["categoryDto"]["color"][i]["id"],
           selected:false}
-
-          if(this.productService.checkFilterOptionExist("color",products["data"]["categoryDto"]["color"][i]["colorCode"])){
+          if(this.productService.checkFilterOptionExist("color",products["data"]["categoryDto"]["color"][i]["id"])){
             tmColor.selected = true;
           }
 
@@ -120,9 +120,10 @@ export class ProductLeftSidebarComponent implements OnInit {
         for(let i in products["data"]["categoryDto"]["size"]){
           let tmsize = {size:products["data"]["categoryDto"]["size"][i]["displayName"],
           value:products["data"]["categoryDto"]["size"][i]["sizeName"],
+          id:products["data"]["categoryDto"]["size"][i]["id"],
           selected:false}
 
-          if(this.productService.checkFilterOptionExist("size",products["data"]["categoryDto"]["size"][i]["sizeName"])){
+          if(this.productService.checkFilterOptionExist("size",products["data"]["categoryDto"]["size"][i]["id"])){
             tmsize.selected = true;
           }
           tempSize.push(tmsize);
