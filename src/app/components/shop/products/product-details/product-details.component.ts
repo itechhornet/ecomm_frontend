@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, ViewChild, Output, EventEmitter, ViewEncapsulation } from '@angular/core';
 import { Product } from 'src/app/modals/product.model';
 import { ProductService } from 'src/app/components/shared/services/product.service';
 import { ActivatedRoute, Params, Router } from '@angular/router';
@@ -11,7 +11,8 @@ import { ProductZoomComponent } from './product-zoom/product-zoom.component';
 @Component({
   selector: 'app-product-details',
   templateUrl: './product-details.component.html',
-  styleUrls: ['./product-details.component.sass']
+  styleUrls: ['./product-details.component.css'],
+  encapsulation : ViewEncapsulation.None,
 })
 export class ProductDetailsComponent implements OnInit {
 
@@ -31,11 +32,20 @@ export class ProductDetailsComponent implements OnInit {
 
   index: number;
   bigProductImageIndex = 0;
-
+  mainImage;
+  public defaultProduct            :   Product = {};
   constructor(private route: ActivatedRoute, public productsService: ProductService, public dialog: MatDialog, private router: Router, private cartService: CartService) {
     this.route.params.subscribe(params => {
       const id = +params['id'];
-      this.productsService.getProduct(id).subscribe(product => this.product = product)
+      this.productsService.getProduct(id).subscribe(product => { 
+        console.log(product.data); 
+        this.product = product.data;
+        this.mainImage = product.data.images[this.bigProductImageIndex].imgPath;
+        this.defaultProduct = product.data.productDetails.filter((data)=>{
+          return data.default == true;
+        })
+        this.defaultProduct = this.defaultProduct[0];
+      })
     });
    }
 
@@ -163,6 +173,8 @@ public openZoomViewer(){
   });
 }
 
+public selectedSize(event){
+}
 
 
 }

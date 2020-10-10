@@ -169,7 +169,7 @@ export class ProductLeftSidebarComponent implements OnInit {
 
   ngOnInit() {
 
-    console.log(this.colors);
+    // console.log(this.colors);
   }
 
   public changeViewType(viewType, viewCol){

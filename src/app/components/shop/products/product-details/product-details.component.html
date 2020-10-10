@@ -14,7 +14,8 @@
                        <button mat-icon-button  fxHide="false" fxHide.gt-md>
                           <mat-icon>fullscreen</mat-icon>
                        </button>
-                       <img [src]="product.pictures[bigProductImageIndex].big"/>
+                       <!-- <img [src]="product.pictures[bigProductImageIndex].big"/> -->
+                       <img [src]="mainImage"/>
                     </div>
                     <a (click)="openProductDialog(product, bigProductImageIndex)" style="cursor: pointer;"><mat-icon>zoom_in</mat-icon></a>
                  </mat-card>
@@ -23,9 +24,9 @@
                 <div class="small-carousel">
                     <div class="swiper-container" [swiper]="config">
                         <div class="swiper-wrapper">
-                            <div *ngFor="let image of product?.pictures; let i=index" class="swiper-slide">
+                            <div *ngFor="let image of product?.images; let i=index" class="swiper-slide">
                                 <mat-card (click)="selectImage(i)" class="p-1">
-                                    <img [src]="image.small" class="swiper-lazy"/>
+                                    <img [src]="image.imgPath" class="swiper-lazy"/>
                                     <div class="swiper-lazy-preloader"></div>
                                 </mat-card>
                             </div>
@@ -39,17 +40,22 @@
 
                   <div class="product-right">
                      <div class="product-details">
-                        <h2>{{product.name}}</h2>
-                        <h4 *ngIf="!productsService?.catalogMode"><del>{{product.salePrice | currency:productsService?.currency:'symbol'}}</del><span>{{product.discount}}% off</span></h4>
-                        <h3 class="price" *ngIf="!productsService?.catalogMode">{{product.price | currency:productsService?.currency:'symbol'}}</h3>
-                        <p class="text-muted description">{{product.description}}</p>
+                        <h2>{{product.displayName}}</h2>
+                        <h4 *ngIf="!productsService?.catalogMode"><del>{{defaultProduct.price | currency:productsService?.currency:'symbol'}}</del><span>{{defaultProduct.discount}}% off</span></h4>
+                        <h3 class="price" *ngIf="!productsService?.catalogMode">{{defaultProduct.price -(defaultProduct.discount / 100)*defaultProduct.price | currency:productsService?.currency:'symbol'}}</h3>
+                        <p class="text-muted description">{{product.prodDesc}}</p>
                      </div>
                      <div class="py-1 mt-15">
                         <p>
                            <span class="text-muted fw-500">Avalibility: </span>
-                           <span class="avalibility" *ngIf="counter <= product.stock"><span>In Stock</span></span>
-                           <span class="avalibility" *ngIf="counter > product.stock"><span>Out of Stock</span></span>
+                           <span class="avalibility" *ngIf="counter <= defaultProduct.availQty"><span>In Stock</span></span>
+                           <span class="avalibility" *ngIf="counter > defaultProduct.availQty"><span>Out of Stock</span></span>
                         </p>
+                     </div>
+                     <div>
+                        <ul>
+                           <li *ngFor="let size of product?.size;" (click)="selectedSize(size);selectedOption=size.displayName" [ngClass]="selectedOption == size.displayName ? 'selected' : ''">{{size.displayName}}</li>
+                        </ul>
                      </div>
                      <div class="quantity">
                         <span class="text-muted fw-500">Quantity</span>
@@ -73,7 +79,7 @@
                </div>
           </div>
 
-          <div class="review-wrapper" fxFlex="100"  fxFlex.md="75">
+          <!-- <div class="review-wrapper" fxFlex="100"  fxFlex.md="75">
             <mat-card>
                <mat-tab-group [@.disabled]="true" [selectedIndex]="0">
                <mat-tab label="Description">
@@ -177,16 +183,16 @@
                </mat-tab>
                </mat-tab-group>
             </mat-card>
-         </div>
+         </div> -->
 
-         <div class="products sec-padding">
+         <!-- <div class="products sec-padding">
             <div class="title">
                 <h4 class="widget-title">Featured Products</h4>
               </div>
           <app-product-carousel-three [product]="products | slice:0:6"></app-product-carousel-three>
-         </div>
+         </div> -->
        </div>
-       <div fxLayout="row wrap" fxHide fxShow.gt-sm fxFlex="100" fxFlex.gt-sm="22">
+       <!-- <div fxLayout="row wrap" fxHide fxShow.gt-sm fxFlex="100" fxFlex.gt-sm="22">
         <div fxFlex="100"  >
           <div fxLayout="row wrap" class="info-bar" ngClass.gt-md="m-0">
              <div fxFlex="100" >
@@ -248,7 +254,7 @@
           </mat-toolbar> 
          
        </div>
-       </div>
+       </div> -->
 
     </div>
     <!-- <div class="py-2 mt-2">

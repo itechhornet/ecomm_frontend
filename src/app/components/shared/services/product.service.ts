@@ -60,11 +60,13 @@ export class ProductService {
 
 
       // Get Products By Id
-  public getProduct(id: number): Observable<Product> {
-    return this.products().pipe(map(items => {
-      return items.find((item: Product) =>
-        { return item.id === id; });
-      }));
+  public getProduct(id: number): Observable<any> {
+
+    return this.httpClient.get<any>(this.env.api_url +'sahana/product/'+ id);
+    // return this.products().pipe(map(items => {
+    //   return items.find((item: Product) =>
+    //     { return item.id === id; });
+    //   }));
     // return this.products.find(product=> product.id === id);
 
     // return this.httpClient.get<Product>(this._url + 'product-' + id + '.json');
