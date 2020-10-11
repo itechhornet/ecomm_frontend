@@ -31,6 +31,7 @@ import { PopularProductsComponent } from './widgets/popular-products/popular-pro
 import { HomeFourComponent } from './home-four/home-four.component';
 import { ProductZoomComponent } from './products/product-details/product-zoom/product-zoom.component';
 import { HomeFiveComponent } from './home-five/home-five.component';
+import { ZoomImageDirective } from './widgets/zoom-image.directive';
 
 
 @NgModule({
@@ -56,6 +57,8 @@ import { HomeFiveComponent } from './home-five/home-five.component';
     HomeFourComponent,
     ProductZoomComponent,
     HomeFiveComponent,
+    ZoomImageDirective,
+
   ],
   imports: [
     CommonModule,
