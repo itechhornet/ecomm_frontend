@@ -1,7 +1,7 @@
 <div class="product-item"  >
   <mat-card fxLayout="column">
     <div class="product-img">
-        <a class="product-link" [routerLink]="['/home/product', product.id]">
+        <a class="product-link" [routerLink]="['/home/product', product.prodId]">
           <img *ngIf="product.imagePath != null" [src]="product.imagePath" alt="">
           <img *ngIf="product.imagePath == null" src="https://sainfoinc.com/wp-content/uploads/2018/02/image-not-available.jpg" alt="">
        </a>

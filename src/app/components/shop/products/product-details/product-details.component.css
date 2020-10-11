@@ -1,0 +1,17 @@
+ul {
+    display: inline-flex;
+    text-decoration: none;
+    list-style: none;
+}
+
+li {
+    padding: 3px 26px;
+    margin: 5px;
+    text-align: center;
+    border: 2px solid #d5d5d5;
+    cursor: pointer;
+    font-size :12px;
+}
+.selected{
+    border-color: orange;
+}

@@ -9,27 +9,30 @@ export class ZoomImageDirective {
   hoverDiv:any;
   xPos:number;
   yPos:number;
+  div:any;
 
   constructor(private renderer: Renderer2, private elRef: ElementRef) { }
 
   ngAfterViewInit() {
     const currentElement = this.elRef.nativeElement;
-    const div = this.renderer.createElement('div');
+    this.div = this.renderer.createElement('div');
     this.image = this.renderer.createElement('img');
     this.hoverDiv = this.renderer.createElement('img');
-    this.renderer.addClass(div , "image-zoom");
+    this.renderer.addClass(this.div , "image-zoom");
     this.renderer.addClass(this.image , "image-zoom-src");
-    this.renderer.setStyle(div,"left","400")
+    this.renderer.setStyle(this.div,"left","400")
+    this.renderer.setStyle(this.div,"display","none")
     this.renderer.setStyle(this.elRef.nativeElement.parentElement,"cursor","zoom-in")
     this.renderer.setAttribute(this.image,"src",currentElement.getAttribute("src"));
     let i = 0;
   
-    this.renderer.appendChild(div, this.image);
-    this.renderer.appendChild(this.elRef.nativeElement.parentElement, div);
+    this.renderer.appendChild(this.div, this.image);
+    this.renderer.appendChild(this.elRef.nativeElement.parentElement, this.div);
   }
 
   @HostListener('mousemove', ['$event'])
   onClick(evt) {
+    this.renderer.setStyle(this.div,"display","initial")
     let x = (((evt.offsetX)/evt.target.clientWidth)*100);
     let y = (((evt.offsetY)/evt.target.clientHeight)*100);
     this.yPos = (y < 75) ? y : this.yPos;
@@ -38,6 +41,12 @@ export class ZoomImageDirective {
     let fy = ((this.yPos-10) >= 0 ) ? (this.yPos-10) :  this.yPos;
   //  if(x<70 && y<70)
      this.renderer.setAttribute(this.image,"style","transform:translate(-"+fx+"%, -"+fy+"%)");
+  
+  }
+
+  @HostListener('mouseout', ['$event'])
+  onOut(evt) {
+    this.renderer.setStyle(this.div,"display","none")
   
   }
 }
