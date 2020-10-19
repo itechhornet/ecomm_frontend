@@ -22,7 +22,7 @@ export class ProductDetailsComponent implements OnInit {
   @ViewChild('zoomViewer', { static: true }) zoomViewer;
   @ViewChild(SwiperDirective, { static: true }) directiveRef: SwiperDirective;
 
-  public product            :   Product = {};
+  public product            :   any = {};
   public products           :   Product[] = [];
 
   public image: any;
@@ -38,7 +38,6 @@ export class ProductDetailsComponent implements OnInit {
     this.route.params.subscribe(params => {
       const id = +params['id'];
       this.productsService.getProduct(id).subscribe(product => { 
-        console.log(product.data); 
         this.product = product.data;
         this.mainImage = product.data.images[this.bigProductImageIndex].imgPath;
         this.defaultProduct = product.data.productDetails.filter((data)=>{
@@ -51,8 +50,6 @@ export class ProductDetailsComponent implements OnInit {
 
   ngOnInit() {
     this.productsService.getProducts().subscribe(product => this.products = product);
-
-
     this.getRelatedProducts();
   }
 
@@ -102,32 +99,27 @@ export class ProductDetailsComponent implements OnInit {
   }
 
 
-  public selectImage(index) {
-    console.log(this.product)
-    console.log(index)
-    this.bigProductImageIndex = index;
+  public selectImage(data) {
+    this.mainImage = data.imgPath;
   }
 
-
-
-
-public increment() {
-  this.counter += 1;
-}
-
-public decrement() {
-  if(this.counter >1){
-     this.counter -= 1;
+  public increment() {
+    this.counter += 1;
   }
-}
 
-getRelatedProducts() {
-  this.productsService.getProducts()
-  .subscribe(
-    (product: Product[]) => {
-      this.products = product
-    });
-}
+  public decrement() {
+    if(this.counter >1){
+      this.counter -= 1;
+    }
+  }
+
+  getRelatedProducts() {
+    this.productsService.getProducts()
+    .subscribe(
+      (product: Product[]) => {
+        this.products = product
+      });
+  }
 
   // Add to cart
   public addToCart(product: Product, quantity) {
@@ -140,41 +132,45 @@ getRelatedProducts() {
     if (quantity > 0)
       this.cartService.addToCart(product,parseInt(quantity));
       this.router.navigate(['/pages/checkout']);
- }
+  }
 
 
 
- public onMouseMove(e){
-  if(window.innerWidth >= 1280){
-    var image, offsetX, offsetY, x, y, zoomer;
-    image = e.currentTarget;
-    offsetX = e.offsetX;
-    offsetY = e.offsetY;
-    x = offsetX/image.offsetWidth*100;
-    y = offsetY/image.offsetHeight*100;
-    zoomer = this.zoomViewer.nativeElement.children[0];
-    if(zoomer){
-      zoomer.style.backgroundPosition = x + '% ' + y + '%';
-      zoomer.style.display = "block";
-      zoomer.style.height = image.height + 'px';
-      zoomer.style.width = image.width + 'px';
+  public onMouseMove(e){
+    if(window.innerWidth >= 1280){
+      var image, offsetX, offsetY, x, y, zoomer;
+      image = e.currentTarget;
+      offsetX = e.offsetX;
+      offsetY = e.offsetY;
+      x = offsetX/image.offsetWidth*100;
+      y = offsetY/image.offsetHeight*100;
+      zoomer = this.zoomViewer.nativeElement.children[0];
+      if(zoomer){
+        zoomer.style.backgroundPosition = x + '% ' + y + '%';
+        zoomer.style.display = "block";
+        zoomer.style.height = image.height + 'px';
+        zoomer.style.width = image.width + 'px';
+      }
     }
   }
-}
 
-public onMouseLeave(event){
-  this.zoomViewer.nativeElement.children[0].style.display = "none";
-}
+  public onMouseLeave(event){
+    this.zoomViewer.nativeElement.children[0].style.display = "none";
+  }
 
-public openZoomViewer(){
-  this.dialog.open(ProductZoomComponent, {
-    data: this.zoomImage,
-    panelClass: 'zoom-dialog'
-  });
-}
+  public openZoomViewer(){
+    this.dialog.open(ProductZoomComponent, {
+      data: this.zoomImage,
+      panelClass: 'zoom-dialog'
+    });
+  }
 
-public selectedSize(event){
-}
+  public selectedSize(event){
+    this.defaultProduct = this.product.productDetails.filter((data)=>{
+      return data.size.size == event.size;
+    })
+    this.defaultProduct = this.defaultProduct[0];
+  }
 
 
 }
