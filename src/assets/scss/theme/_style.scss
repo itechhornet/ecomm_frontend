@@ -5210,10 +5210,19 @@ margin: 10px 0;
   cursor:none;
 }
 
-.hover-cursor{
-   position:absolute;
+.src-image{
+  cursor:all-scroll;
+}
+
+.image-zoom{
+  background-repeat: no-repeat;
+}
+
+.hover-zoom{
+   position:relative;
    width: 100px;
    height: 100px;
    opacity: 0.3;
-    background-color: black;
+  background-color: black;
 }
+

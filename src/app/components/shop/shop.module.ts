@@ -58,7 +58,6 @@ import { ZoomImageDirective } from './widgets/zoom-image.directive';
     ProductZoomComponent,
     HomeFiveComponent,
     ZoomImageDirective,
-
   ],
   imports: [
     CommonModule,

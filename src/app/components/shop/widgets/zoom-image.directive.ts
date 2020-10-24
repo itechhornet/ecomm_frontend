@@ -10,6 +10,8 @@ export class ZoomImageDirective {
   xPos:number;
   yPos:number;
   div:any;
+  posX: any;
+  posY: any;
 
   constructor(private renderer: Renderer2, private elRef: ElementRef) { }
 
@@ -20,10 +22,11 @@ export class ZoomImageDirective {
     this.hoverDiv = this.renderer.createElement('img');
     this.renderer.addClass(this.div , "image-zoom");
     this.renderer.addClass(this.image , "image-zoom-src");
-    this.renderer.setStyle(this.div,"left","400")
+    this.renderer.setStyle(this.div,"left","400");
+    this.renderer.setStyle(this.div,"border","6px solid #ef6c00");
     this.renderer.setStyle(this.div,"display","none")
     this.renderer.setStyle(this.elRef.nativeElement.parentElement,"cursor","zoom-in")
-    this.renderer.setAttribute(this.image,"src",currentElement.getAttribute("src"));
+    this.renderer.setStyle(this.div,"background-image","url('"+currentElement.getAttribute("src")+"')");
     let i = 0;
   
     this.renderer.appendChild(this.div, this.image);
@@ -31,22 +34,21 @@ export class ZoomImageDirective {
   }
 
   @HostListener('mousemove', ['$event'])
-  onClick(evt) {
-    this.renderer.setStyle(this.div,"display","initial")
-    let x = (((evt.offsetX)/evt.target.clientWidth)*100);
-    let y = (((evt.offsetY)/evt.target.clientHeight)*100);
-    this.yPos = (y < 75) ? y : this.yPos;
-    this.xPos = (x < 75) ? x : this.xPos;
-    let fx = ((this.xPos-10) >= 0 ) ? (this.xPos-10) :  this.xPos;
-    let fy = ((this.yPos-10) >= 0 ) ? (this.yPos-10) :  this.yPos;
-  //  if(x<70 && y<70)
-     this.renderer.setAttribute(this.image,"style","transform:translate(-"+fx+"%, -"+fy+"%)");
+  onClick(event) {
+    let pre = {x:this.posX,y:this.posY}
+    this.posX = event.offsetX ? (event.offsetX) : event.pageX - this.image.offsetLeft;
+    this.posY = event.offsetY ? (event.offsetY) : event.pageY - this.image.offsetTop;
+
+    this.posX = (this.posX < 350) ? this.posX :  pre.x;
+    this.posY = (this.posY < 350) ? this.posY :  pre.y;
+    this.renderer.setStyle(this.div,"background-position","-"+(this.posX*2)+"px -"+(this.posY*2)+"px");
+    this.renderer.setStyle(this.div,"display","inline-block")
   
   }
 
   @HostListener('mouseout', ['$event'])
   onOut(evt) {
-    this.renderer.setStyle(this.div,"display","none")
+   this.renderer.setStyle(this.div,"display","none")
   
   }
 }
