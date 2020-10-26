@@ -11,15 +11,15 @@
                  </mat-card> -->
                  <mat-card class="product-image">
                    <div>
-                      <button mat-icon-button  fxHide="false" fxHide.gt-md>
+                      <!-- <button mat-icon-button  fxHide="false" fxHide.gt-md>
                          <mat-icon>fullscreen</mat-icon>
-                      </button>
+                      </button> -->
                       <!-- <img [src]="product.pictures[bigProductImageIndex].big"/> -->
-                      <!-- <img [src]="mainImage" appZoomImage  /> -->
-                      <img class="src-image" src="https://imgshopimages.lbb.in/catalog/product/u/n/untitled-1_0009_klm4.jpg" appZoomImage  />
+                      <img [src]="mainImage" class="responsive" appZoomImage/>
+                      <!-- <img src="https://i.pinimg.com/originals/20/1f/6c/201f6cfa3110de72eada4918dafc8c43.jpg" appZoomImage  /> -->
                      
                    </div>
-                   <a (click)="openProductDialog(product, bigProductImageIndex)" style="cursor: pointer;"><mat-icon>zoom_in</mat-icon></a>
+                   <!-- <a (click)="openProductDialog(product, bigProductImageIndex)" style="cursor: pointer;"><mat-icon>zoom_in</mat-icon></a> -->
                 </mat-card>
 
 
@@ -27,9 +27,9 @@
                    <div class="swiper-container" [swiper]="config">
                        <div class="swiper-wrapper">
                            <div *ngFor="let image of product?.images; let i=index" class="swiper-slide">
-                               <mat-card (click)="selectImage(i)" class="p-1">
-                                   <img [src]="image.imgPath" class="swiper-lazy"/>
-                                   <div class="swiper-lazy-preloader"></div>
+                               <mat-card  class="p-1">
+                                   <img [src]="image.imgPath" (click)="selectImage(image)" class="swiper-lazy"/>
+                                   <!-- <div class="swiper-lazy-preloader"></div> -->
                                </mat-card>
                            </div>
                        </div>
@@ -50,14 +50,22 @@
                     <div class="py-1 mt-15">
                        <p>
                           <span class="text-muted fw-500">Avalibility: </span>
-                          <span class="avalibility" *ngIf="counter <= defaultProduct.availQty"><span>In Stock</span></span>
-                          <span class="avalibility" *ngIf="counter > defaultProduct.availQty"><span>Out of Stock</span></span>
+                          <span class="avalibility" *ngIf="product.available"><span>In Stock</span></span>
+                          <span class="avalibility" *ngIf="!product.available"><span>Out of Stock</span></span>
                        </p>
                     </div>
                     <div>
-                       <ul>
-                          <li *ngFor="let size of product?.size;" (click)="selectedSize(size);selectedOption=size.displayName" [ngClass]="selectedOption == size.displayName ? 'selected' : ''">{{size.displayName}}</li>
-                       </ul>
+                       <label class="size-label">size :</label>
+                       <mat-chip-list >
+                          <mat-chip  color="primary" 
+                          *ngFor="let item of product.size;" 
+                          [selected] = "defaultProduct.size.size == item.size" 
+                          [value]="item.size" 
+                          (click)="selectedSize(item); defaultProduct.size.size=item.size;"
+                          style="cursor: pointer;">
+                          {{item.displayName}}
+                        </mat-chip> 
+                        </mat-chip-list>
                     </div>
                     <div class="quantity">
                        <span class="text-muted fw-500">Quantity</span>
@@ -74,14 +82,14 @@
                        </div>
                     </div>
                     <div class="buttons mt-20">
-                       <button mat-raised-button color="primary" class="btn-project mr-10" (click)="addToCart(product, counter)">ADD TO CARD</button>
+                       <button mat-raised-button color="primary" class="btn-project mr-10" (click)="addToCart(product, counter)">ADD TO CART</button>
                        <button mat-raised-button color="primary" class="btn-project" (click)="buyNow(product, counter)">BUY NOW</button>
                     </div>
                  </div>
               </div>
          </div>
 
-         <!-- <div class="review-wrapper" fxFlex="100"  fxFlex.md="75">
+         <div class="review-wrapper" fxFlex="100"  fxFlex.md="75">
            <mat-card>
               <mat-tab-group [@.disabled]="true" [selectedIndex]="0">
               <mat-tab label="Description">
@@ -102,7 +110,7 @@
                     </ul>
                  </div>
               </mat-tab>
-              <mat-tab label="Reviews">
+              <!-- <mat-tab label="Reviews">
                  <div class="full-desc lh">
                     <mat-list class="reviews">
                        <mat-list-item class="content">
@@ -182,10 +190,10 @@
                        </form>
                     </div>
                  </div>
-              </mat-tab>
+              </mat-tab> -->
               </mat-tab-group>
            </mat-card>
-        </div> -->
+        </div>
 
         <!-- <div class="products sec-padding">
            <div class="title">
